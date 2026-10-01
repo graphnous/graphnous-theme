@@ -92,6 +92,8 @@ export const Confirmed: Story = {
 export const Cancelled: Story = {
   args: { open: true },
   play: async ({ args, canvas }) => {
+    // Opened by an effect, which can run after the play function starts
+    await canvas.findByRole("dialog");
     await userEvent.keyboard("{Enter}");
 
     await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
@@ -103,6 +105,7 @@ export const Cancelled: Story = {
 export const CannotBeClosedWhileConfirming: Story = {
   args: { open: true, confirming: true },
   play: async ({ args, canvas }) => {
+    await canvas.findByRole("dialog");
     await userEvent.keyboard("{Escape}");
 
     await expect(canvas.getByRole("dialog")).toBeVisible();
