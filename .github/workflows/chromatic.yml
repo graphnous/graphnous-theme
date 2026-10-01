@@ -1,0 +1,38 @@
+# Publishes the Storybook to Chromatic and compares each story's snapshots,
+# in light and in dark (.storybook/preview.tsx), with the accepted ones:
+# changes wait for review in Chromatic, as its UI Tests check on the pull
+# request. On main, they are accepted as the new baselines.
+
+name: Chromatic
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  chromatic:
+    name: Visual tests
+    runs-on: ubuntu-latest
+    # Dependabot's pull requests do not get the repository's secrets
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The history, for Chromatic to find each build's baselines
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_KEY }}
+          buildScriptName: build-storybook
+          # Changes are reviewed in Chromatic, not failed here
+          exitZeroOnChanges: true
+          autoAcceptChanges: main

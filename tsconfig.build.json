@@ -1,0 +1,17 @@
+{
+  // Compiles the components for the published package (npm run build):
+  // JavaScript and type declarations in dist, in src's folders, so
+  // theme.css's @source still finds the components next to it
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true,
+    // The maps carry the source, which the package does not
+    "inlineSources": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/**/*.stories.tsx", "src/foundations"]
+}

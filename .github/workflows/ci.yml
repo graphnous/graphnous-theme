@@ -1,0 +1,50 @@
+# The theme's checks, for its own repository, with the package at its root.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: Lint, typecheck and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      # The package as it is published (publish.yml)
+      - run: npm run build
+
+  stories:
+    name: Stories
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # The browser the stories run in, at the version of the installed
+      # Playwright
+      - run: npx playwright install --with-deps chromium
+
+      # Every story as a test, with its accessibility checks, in light and
+      # in dark
+      - run: npm run test:storybook
+
+      # Also catches stories that only break the static build
+      - run: npm run build-storybook

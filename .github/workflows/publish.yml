@@ -1,0 +1,57 @@
+# Publishes the package to GitHub Packages, as @graphnous/theme: the
+# compiled components, their types, and theme.css for Tailwind CSS
+# (npm run build, scripts/package.mjs).
+#
+# Runs when a version tag is pushed, such as v0.2.0, which must be the
+# version in package.json; or by hand, for the version in package.json.
+
+name: Publish
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          # Writes an .npmrc that publishes the @graphnous scope there, with
+          # NODE_AUTH_TOKEN
+          registry-url: https://npm.pkg.github.com
+          scope: "@graphnous"
+
+      - run: npm ci
+
+      - name: Check the tag is the package's version
+        if: github.ref_type == 'tag'
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          if [ "${GITHUB_REF_NAME}" != "v${version}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} is not package.json's version, ${version}"
+            exit 1
+          fi
+
+      - run: npm run lint
+      - run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+        env:
+          # The repository GitHub Packages links the package to
+          REPOSITORY: ${{ github.repository }}
+
+      - name: Publish
+        run: npm publish ./dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

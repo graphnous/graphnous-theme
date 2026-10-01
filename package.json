@@ -1,0 +1,63 @@
+{
+  "name": "graphnous-theme",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Graphnous component library and Tailwind CSS theme",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./theme.css": "./src/theme.css"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "typecheck": "tsc",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && node scripts/package.mjs",
+    "storybook": "storybook dev -p 6007",
+    "build-storybook": "storybook build",
+    "test:storybook": "vitest run --project=storybook-light && vitest run --project=storybook-dark"
+  },
+  "peerDependencies": {
+    "react": "^19.2",
+    "react-dom": "^19.2",
+    "tailwindcss": "^4"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.20",
+    "@phosphor-icons/react": "^2.1.10",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "latest",
+    "@eslint/js": "^9",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@storybook/addon-a11y": "^10.6.1",
+    "@storybook/addon-docs": "^10.6.1",
+    "@storybook/addon-mcp": "^10.6.1",
+    "@storybook/addon-vitest": "^10.6.1",
+    "@storybook/react-vite": "^10.6.1",
+    "@tailwindcss/vite": "^4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitest/browser-playwright": "^4",
+    "@vitest/coverage-v8": "^4",
+    "eslint": "^9",
+    "eslint-plugin-jsx-a11y": "^6",
+    "eslint-plugin-react": "^7",
+    "eslint-plugin-react-hooks": "^7",
+    "eslint-plugin-storybook": "^10.6.1",
+    "playwright": "latest",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "storybook": "^10.6.1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "typescript-eslint": "^8",
+    "vite": "latest",
+    "vitest": "^4"
+  }
+}

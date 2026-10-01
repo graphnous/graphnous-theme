@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "../src/theme.css";
+
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+/* The fonts an app loads, so stories look like the app */
+:root {
+  --font-geist-sans: "Geist Variable";
+  --font-geist-mono: "Geist Mono Variable";
+}

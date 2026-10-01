@@ -1,0 +1,17 @@
+# Weekly updates of the theme's dependencies, grouped so each ecosystem
+# opens one pull request at a time.
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      npm:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
