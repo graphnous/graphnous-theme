@@ -8,7 +8,7 @@ fetch data, read the URL or know the API. That stays in the apps, such as
 
 It comes two ways:
 
-- **Published**, as `@graphnous/theme` on GitHub Packages: the components
+- **Published**, as `@graphnous/theme` on npm: the components
   compiled to JavaScript, with their types and the theme's CSS (see
   [Publishing](#publishing)).
 - **As TypeScript source**, through the npm workspace at the root of this
@@ -20,16 +20,8 @@ Next.js or Vite.
 
 ## Installing it
 
-From GitHub Packages, with a token that can read packages, in the app's
-`.npmrc`:
-
-```ini
-@graphnous:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
-
-Install it under the name `graphnous-theme`, so imports read the same as
-in the workspace:
+From npm, under the name `graphnous-theme`, so imports read the same as in
+the workspace:
 
 ```bash
 npm install graphnous-theme@npm:@graphnous/theme@^0.1.0
@@ -149,8 +141,8 @@ the Chromatic project's token.
   stories;
 - `theme.css`, whose `@source` finds the compiled components next to it, so
   Tailwind generates their classes in the app;
-- its `package.json` (`scripts/package.mjs`), as `@graphnous/theme`: GitHub
-  Packages only takes packages scoped to the repository's owner.
+- its `package.json` (`scripts/package.mjs`), as `@graphnous/theme`, in the
+  `graphnous` organization on npm, published as public.
 
 This folder's `package.json` stays as it is, so the workspace keeps using
 the TypeScript source.
@@ -163,8 +155,9 @@ git tag v0.2.0 && git push origin v0.2.0
 ```
 
 The publish workflow checks the tag is the version, then lints,
-typechecks, builds and publishes, with the workflow's own token. It can
-also be run by hand, for the version in `package.json`.
+typechecks, builds and publishes to npm, with the `NPM_TOKEN` secret: an
+npm token that can publish to the `graphnous` organization. It can also be
+run by hand, for the version in `package.json`.
 
 ## Its own repository
 
@@ -176,7 +169,7 @@ at a repository's root only, so here it does nothing.
 | --- | --- |
 | `.github/workflows/ci.yml` | On every pull request and push to main: lint, typecheck and the package's build, every story as a test in light and in dark, and the Storybook build |
 | `.github/workflows/chromatic.yml` | On every pull request and push to main: the visual tests in Chromatic (see [Visual tests](#visual-tests)) |
-| `.github/workflows/publish.yml` | On a version tag, such as `v0.2.0`, or by hand: publishes the package to GitHub Packages (see [Publishing](#publishing)) |
+| `.github/workflows/publish.yml` | On a version tag, such as `v0.2.0`, or by hand: publishes the package to npm (see [Publishing](#publishing)) |
 | `.github/dependabot.yml` | Weekly updates of the npm and GitHub Actions dependencies |
 | `.github/CODEOWNERS` | Who reviews |
 | `.github/pull_request_template.md` | What to check before asking for a review |

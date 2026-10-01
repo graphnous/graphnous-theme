@@ -1,12 +1,12 @@
 /**
  * Makes dist a package to publish, after tsc compiled the components into
  * it (npm run build): copies theme.css and the README, and writes its
- * package.json, with the compiled exports and the scoped name GitHub
- * Packages needs. This folder's package.json stays as it is, so the
- * workspace keeps using the TypeScript source.
+ * package.json, with the compiled exports, as @graphnous/theme on npm.
+ * This folder's package.json stays as it is, so the workspace keeps using
+ * the TypeScript source.
  *
  * PACKAGE_NAME and REPOSITORY override the name and the repository, which
- * GitHub Packages links the package to.
+ * the package's page on npm links to.
  */
 import { copyFile, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -31,7 +31,8 @@ const manifest = {
   },
   peerDependencies: source.peerDependencies,
   dependencies: source.dependencies,
-  publishConfig: { registry: "https://npm.pkg.github.com" },
+  // Scoped packages are private on npm unless published as public
+  publishConfig: { access: "public" },
 };
 
 await copyFile(path.join(root, "src", "theme.css"), path.join(dist, "theme.css"));
