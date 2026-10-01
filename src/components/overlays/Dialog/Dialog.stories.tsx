@@ -86,6 +86,8 @@ export const OpenedAndClosedWithTheKeyboard: Story = {
 export const ClosedWithTheCloseButton: Story = {
   args: { open: true },
   play: async ({ args, canvas }) => {
+    // Opened by an effect, which can run after the play function starts
+    await canvas.findByRole("dialog");
     await userEvent.click(canvas.getByRole("button", { name: "Close" }));
 
     await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
@@ -96,7 +98,7 @@ export const ClosedWithTheCloseButton: Story = {
 export const ClosedByClickingOutside: Story = {
   args: { open: true },
   play: async ({ args, canvas }) => {
-    const dialog = canvas.getByRole("dialog");
+    const dialog = await canvas.findByRole("dialog");
 
     // The backdrop is part of the dialog element, outside its content
     const { left, top } = dialog.getBoundingClientRect();
@@ -110,6 +112,7 @@ export const ClosedByClickingOutside: Story = {
 export const StaysOpenOnClicksInside: Story = {
   args: { open: true },
   play: async ({ args, canvas }) => {
+    await canvas.findByRole("dialog");
     await userEvent.click(canvas.getByText("The form to create a project goes here."));
 
     await expect(canvas.getByRole("dialog")).toBeVisible();
