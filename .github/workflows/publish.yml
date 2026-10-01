@@ -1,4 +1,4 @@
-# Publishes the package to GitHub Packages, as @graphnous/theme: the
+# Publishes the package to npm, as @graphnous/theme: the
 # compiled components, their types, and theme.css for Tailwind CSS
 # (npm run build, scripts/package.mjs).
 #
@@ -14,11 +14,10 @@ on:
 
 jobs:
   publish:
-    name: Publish to GitHub Packages
+    name: Publish to npm
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v7
 
@@ -26,10 +25,8 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          # Writes an .npmrc that publishes the @graphnous scope there, with
-          # NODE_AUTH_TOKEN
-          registry-url: https://npm.pkg.github.com
-          scope: "@graphnous"
+          # Writes an .npmrc that publishes to npm with NODE_AUTH_TOKEN
+          registry-url: https://registry.npmjs.org
 
       - run: npm ci
 
@@ -48,10 +45,11 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # The repository GitHub Packages links the package to
+          # The repository the package's page on npm links to
           REPOSITORY: ${{ github.repository }}
 
       - name: Publish
         run: npm publish ./dist
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # An npm token that can publish to the @graphnous organization
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
