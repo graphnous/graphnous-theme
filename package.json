@@ -1,6 +1,6 @@
 {
   "name": "graphnous-theme",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "The Graphnous component library and Tailwind CSS theme",
   "type": "module",
