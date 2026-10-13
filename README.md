@@ -71,7 +71,8 @@ export function AppLinkProvider({ children }: { children: React.ReactNode }) {
 ## Design tokens
 
 Colours, fonts and corner radii are Tailwind theme variables in
-`src/theme.css`, from the GraphNous colour palette (dark mode first).
+`src/theme.css`, matching [graphnous.dev](https://graphnous.dev): violet on
+zinc, dark mode first, with a light counterpart from the same scales.
 Components use their semantic utilities, such as `bg-surface`,
 `text-foreground-secondary` or `bg-success-soft`, rather than colours.
 Statuses map onto the five tones: `neutral`, `info`, `success`, `warning`
